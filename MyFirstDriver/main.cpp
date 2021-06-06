@@ -10,7 +10,6 @@ DriverData data;
 
 NTSTATUS UnloadDriver(PDRIVER_OBJECT  DriverObject)
 {
-	DbgPrintEx(0, 0, "Driver was unloaded from kernel!\n");
 	PsRemoveLoadImageNotifyRoutine(reinterpret_cast<PLOAD_IMAGE_NOTIFY_ROUTINE>(ImageLoadCallback));
 	IoDeleteSymbolicLink(&data.dos);
 	IoDeleteDevice(DriverObject->DeviceObject);
@@ -35,6 +34,5 @@ NTSTATUS DriverEntry(_In_ PDRIVER_OBJECT  DriverObject, _In_ PUNICODE_STRING Reg
 
 	data.pDeviceObject->Flags |= DO_DIRECT_IO;
 	//data.pDeviceObject->Flags &= ~DO_DEVICE_INITIALIZING;
-	DbgPrintEx(0, 0, "Driver was load into kernel!\n");
 	return STATUS_SUCCESS;
 }

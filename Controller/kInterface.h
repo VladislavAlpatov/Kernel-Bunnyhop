@@ -78,4 +78,11 @@ public:
 
 		return addr;
 	};
+	DWORD GetProcessID()
+	{
+		DWORD id = 0;
+		DeviceIoControl(this->hDriver, CallRequests::GET_CSGO_PID, &id, sizeof(id), &id, sizeof(id), 0, 0);
+
+		return id;
+	}
 };

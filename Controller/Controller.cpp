@@ -4,6 +4,7 @@
 
 DWORD clientDll   = 0;
 DWORD localplayer = 0;
+DWORD pid         = 0;
 
 int main()
 {
@@ -17,19 +18,26 @@ int main()
     else
         printf("Connected!\n");
 
-    clientDll = 0x2ccb0000;
-    localplayer = drive.ReadVirtualMemory<DWORD>(14980, clientDll + 0xD892CC);
+    clientDll   = drive.GetClientAddres();
+    localplayer = drive.ReadVirtualMemory<DWORD>(11692, clientDll + 0xD892CC);
+    pid         = drive.GetProcessID();
     std::cout << "0x" << std::hex << clientDll << "\n";
     std::cout << "0x" << std::hex << localplayer << "\n";
+    printf("%d", pid);
 
     while (true)
     {
-        short int state = drive.ReadVirtualMemory<int>(14980, localplayer + 0x104);
-        if ( (state == 257 or state == 263 ) and GetAsyncKeyState(VK_SPACE))
+        short int state = drive.ReadVirtualMemory<int>(pid, localplayer + 0x104);
+        if (!GetAsyncKeyState(VK_SPACE))
         {
-            drive.WriteVirtualMemory<int>(14980, clientDll + 0x524BF4C, 5);
             Sleep(10);
-            drive.WriteVirtualMemory<int>(14980, clientDll + 0x524BF4C, 4);
+        }
+        else if (state == 257 or state == 263)
+        {
+            drive.WriteVirtualMemory<int>(pid, clientDll + 0x524BF4C, 5);
+            Sleep(10);
+            drive.WriteVirtualMemory<int>(pid, clientDll + 0x524BF4C, 4);
+            Sleep(100);
         }
     }
     Sleep(5000);

@@ -59,6 +59,14 @@ NTSTATUS Communication::IoControll(PDEVICE_OBJECT pDeviceObject, PIRP Irp)
 		status = STATUS_SUCCESS;
 		byteIO = sizeof(*out);
 	}
+	else if (controle_code == CallRequests::GET_CSGO_PID)
+	{
+		PDWORD32 out = (PDWORD32)Irp->AssociatedIrp.SystemBuffer;
+
+		*out = csgoPID;
+		status = STATUS_SUCCESS;
+		byteIO = sizeof(*out);
+	}
 	Irp->IoStatus.Status      = status;
 	Irp->IoStatus.Information = byteIO;
 
