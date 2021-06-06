@@ -10,10 +10,10 @@ typedef struct _READ_VIRTUAL_MEMORY_REQUEST
 
 } READ_VIRTUAL_MEMORY_REQUEST, * PREAD_VIRTUAL_MEMORY_REQUEST;
 
-typedef struct WRITE_VIRTUAL_MEMORY_REQUEST
+typedef struct _WRITE_VIRTUAL_MEMORY_REQUEST
 {
 	DWORD32 ProcessId;
-	DWORD64 Address;
+	DWORD32 Address;
 	PVOID   pBuff;
 	DWORD32 Size;
 }WRITE_VIRTUAL_MEMORY_REQUEST, * PWRITE_VIRTUAL_MEMORY_REQUEST;
@@ -59,7 +59,7 @@ public:
 	}
 
 	template <typename type>
-	void WriteVirtualMemory(DWORD32 ProcessId, DWORD64 ReadAddress, type value)
+	void WriteVirtualMemory(DWORD32 ProcessId, DWORD32 ReadAddress, type value)
 	{
 		WRITE_VIRTUAL_MEMORY_REQUEST ReadRequest;
 		type buff;
