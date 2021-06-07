@@ -19,8 +19,9 @@ int main()
         printf("Connected!\n");
 
     clientDll   = drive.GetClientAddres();
-    localplayer = drive.ReadVirtualMemory<DWORD>(11692, clientDll + 0xD892CC);
     pid         = drive.GetProcessID();
+    localplayer = drive.ReadVirtualMemory<DWORD>(pid, clientDll + 0xD892CC);
+
     std::cout << "0x" << std::hex << clientDll << "\n";
     std::cout << "0x" << std::hex << localplayer << "\n";
     printf("%d", pid);
