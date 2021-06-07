@@ -2,9 +2,9 @@
 #include "kInterface.h"
 #include <thread>
 
-DWORD clientDll   = 0;
-DWORD localplayer = 0;
-DWORD pid         = 0;
+DWORD32 clientDll   = 0;
+DWORD32 localplayer = 0;
+DWORD32 pid         = 0;
 
 int main()
 {
@@ -20,25 +20,17 @@ int main()
 
     clientDll   = drive.GetClientAddres();
     pid         = drive.GetProcessID();
-    localplayer = drive.ReadVirtualMemory<DWORD>(pid, clientDll + 0xD892CC);
+    localplayer = drive.ReadVirtualMemory<DWORD32>(pid, clientDll + 0xD892CC);
 
-    std::cout << "0x" << std::hex << clientDll << "\n";
-    std::cout << "0x" << std::hex << localplayer << "\n";
-    printf("%d", pid);
 
     while (true)
     {
         short int state = drive.ReadVirtualMemory<int>(pid, localplayer + 0x104);
-        if (!GetAsyncKeyState(VK_SPACE))
-        {
-            Sleep(10);
-        }
-        else if (state == 257 or state == 263)
+        if ( (state == 257 or state == 263) and GetAsyncKeyState(VK_SPACE))
         {
             drive.WriteVirtualMemory<int>(pid, clientDll + 0x524BF4C, 5);
-            Sleep(10);
+            Sleep(50);
             drive.WriteVirtualMemory<int>(pid, clientDll + 0x524BF4C, 4);
-            Sleep(100);
         }
     }
     Sleep(5000);

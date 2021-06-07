@@ -45,7 +45,7 @@ public:
 		return true;
 	}
 	template <typename type>
-	type ReadVirtualMemory(DWORD32 ProcessId, DWORD32 ReadAddress)
+	type ReadVirtualMemory(DWORD32& ProcessId, DWORD32 ReadAddress)
 	{
 		READ_VIRTUAL_MEMORY_REQUEST ReadRequest;
 		type buff;
@@ -59,7 +59,7 @@ public:
 	}
 
 	template <typename type>
-	void WriteVirtualMemory(DWORD32 ProcessId, DWORD32 ReadAddress, type value)
+	void WriteVirtualMemory(DWORD32& ProcessId, DWORD32 ReadAddress, type value)
 	{
 		WRITE_VIRTUAL_MEMORY_REQUEST ReadRequest;
 		type buff;
