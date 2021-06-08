@@ -33,6 +33,6 @@ NTSTATUS DriverEntry(_In_ PDRIVER_OBJECT  DriverObject, _In_ PUNICODE_STRING Reg
 	DriverObject->MajorFunction[IRP_MJ_DEVICE_CONTROL] = Communication::IoControll;
 
 	data.pDeviceObject->Flags |= DO_DIRECT_IO;
-	//data.pDeviceObject->Flags &= ~DO_DEVICE_INITIALIZING;
+	data.pDeviceObject->Flags &= ~DO_DEVICE_INITIALIZING;
 	return STATUS_SUCCESS;
 }
