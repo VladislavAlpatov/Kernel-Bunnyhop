@@ -35,25 +35,25 @@ NTSTATUS Communication::IoControll(PDEVICE_OBJECT pDeviceObject, PIRP Irp)
 		{
 			status = STATUS_SUCCESS;
 			byteIO = sizeof(READ_VIRTUAL_MEMORY_REQUEST);
-			memory::KernelReadVirtualMemory(Process, (PVOID)data->Address, data->buff, data->Size);
+			memory::KernelReadVirtualMemory(Process, reinterpret_cast<PVOID>(data->Address), data->buff, data->Size);
 		}
 	}
 	else if (controle_code == CallRequests::WRITE_VIRTUAL_MEMORY_CALL)
 	{
-		PWRITE_VIRTUAL_MEMORY_REQUEST data = (PWRITE_VIRTUAL_MEMORY_REQUEST)Irp->AssociatedIrp.SystemBuffer;
+		PWRITE_VIRTUAL_MEMORY_REQUEST data = reinterpret_cast<PWRITE_VIRTUAL_MEMORY_REQUEST>(Irp->AssociatedIrp.SystemBuffer);
 		PEPROCESS					  Process;
 
 		if (PsLookupProcessByProcessId(reinterpret_cast<HANDLE>(data->ProcessId), &Process) == STATUS_SUCCESS)
 		{
 			status = STATUS_SUCCESS;
 			byteIO = sizeof(PWRITE_VIRTUAL_MEMORY_REQUEST);
-			memory::KernelWriteVirtualMemory(Process, data->pBuff, (PVOID)data->Address, data->Size);
+			memory::KernelWriteVirtualMemory(Process, data->pBuff, reinterpret_cast<PVOID>(data->Address), data->Size);
 
 		}
 	}
 	else if (controle_code == CallRequests::GET_CLIENTDLL_ADDR)
 	{
-		PDWORD32 out = (PDWORD32)Irp->AssociatedIrp.SystemBuffer;
+		PDWORD32 out = reinterpret_cast<PDWORD32>(Irp->AssociatedIrp.SystemBuffer);
 
 		*out   = clientDLL;
 		status = STATUS_SUCCESS;
@@ -61,9 +61,9 @@ NTSTATUS Communication::IoControll(PDEVICE_OBJECT pDeviceObject, PIRP Irp)
 	}
 	else if (controle_code == CallRequests::GET_CSGO_PID)
 	{
-		PDWORD32 out = (PDWORD32)Irp->AssociatedIrp.SystemBuffer;
+		PDWORD32 out = reinterpret_cast<PDWORD32>(Irp->AssociatedIrp.SystemBuffer);
 
-		*out = csgoPID;
+		*out   = csgoPID;
 		status = STATUS_SUCCESS;
 		byteIO = sizeof(*out);
 	}

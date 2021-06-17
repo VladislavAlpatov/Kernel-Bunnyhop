@@ -64,10 +64,10 @@ public:
 		WRITE_VIRTUAL_MEMORY_REQUEST ReadRequest;
 		type buff;
 
-		ReadRequest.ProcessId = ProcessId;
-		ReadRequest.Address = ReadAddress;
-		ReadRequest.Size = sizeof(type);
-		ReadRequest.pBuff = &value;
+		ReadRequest.ProcessId  = ProcessId;
+		ReadRequest.Address    = ReadAddress;
+		ReadRequest.Size       = sizeof(type);
+		ReadRequest.pBuff      = &value;
 
 		DeviceIoControl(this->hDriver, CallRequests::WRITE_VIRTUAL_MEMORY_CALL, &ReadRequest, sizeof(ReadRequest), &ReadRequest, sizeof(ReadRequest), 0, 0);
 	}
