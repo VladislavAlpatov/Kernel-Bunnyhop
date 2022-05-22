@@ -26,6 +26,15 @@ NTSTATUS Communication::IoControll(PDEVICE_OBJECT pDeviceObject, PIRP Irp)
 	ULONG			   controle_code = stack->Parameters.DeviceIoControl.IoControlCode;
 
 
+
+	switch (controle_code)
+	{
+
+	default:
+		break;
+	}
+
+
 	if (controle_code == CallRequests::READ_VIRTUAL_MEMORY_CALL)
 	{
 		PREAD_VIRTUAL_MEMORY_REQUEST data = (PREAD_VIRTUAL_MEMORY_REQUEST)Irp->AssociatedIrp.SystemBuffer;
@@ -35,7 +44,7 @@ NTSTATUS Communication::IoControll(PDEVICE_OBJECT pDeviceObject, PIRP Irp)
 		{
 			status = STATUS_SUCCESS;
 			byteIO = sizeof(READ_VIRTUAL_MEMORY_REQUEST);
-			memory::KernelReadVirtualMemory(Process, reinterpret_cast<PVOID>(data->Address), data->buff, data->Size);
+			Memory::KernelReadVirtualMemory(Process, reinterpret_cast<PVOID>(data->Address), data->buff, data->Size);
 		}
 	}
 	else if (controle_code == CallRequests::WRITE_VIRTUAL_MEMORY_CALL)
@@ -47,7 +56,7 @@ NTSTATUS Communication::IoControll(PDEVICE_OBJECT pDeviceObject, PIRP Irp)
 		{
 			status = STATUS_SUCCESS;
 			byteIO = sizeof(PWRITE_VIRTUAL_MEMORY_REQUEST);
-			memory::KernelWriteVirtualMemory(Process, data->pBuff, reinterpret_cast<PVOID>(data->Address), data->Size);
+			Memory::KernelWriteVirtualMemory(Process, data->pBuff, reinterpret_cast<PVOID>(data->Address), data->Size);
 
 		}
 	}
